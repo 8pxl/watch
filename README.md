@@ -7,7 +7,7 @@ Here is what the process should look like:
 
 In this use case, the program is monitoring a [tech internship repository](https://github.com/SimplifyJobs/Summer2026-Internships) and pushing a notification each time a new listing is posted
 
-You could also use this to monitor things like price changes, lab postings, etc. (though some use cases will probably require some tinkering to start working, especially with more dynamically rendered sites)
+You could also use this to monitor things like price changes, lab postings, etc. (though some use cases will probably require some tinkering in order to work, especially with more dynamically rendered sites)
 
 ## Usage:
 Ensure selenium is installed (i used 4.35.0 but older versions should work)
@@ -19,7 +19,7 @@ pip install selenium
 ```
 
 
-Enter the websites you wish to watch (line separated) in `sites.txt` and run the program with 
+ Enter the websites you wish to watch (line separated) in `sites.txt` and run the program with (ensure you've activated the venv)
 
 ```zsh
 python main.py
