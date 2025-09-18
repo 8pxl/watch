@@ -4,8 +4,6 @@ import subprocess
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-import os
-import requests
 import re
 
 debugCount = 0
@@ -37,11 +35,18 @@ def notify(title, content):
         "-e",
         notif
     ])
+
+def printInfo(websites):
+    print("watching the following:")
+    for website in websites:
+        print(website)
+    print("")
 #init
 notify("watch", "process started!")
 if __name__ == "__main__":
     notify("watch", "process started!")
     websites = getWebsites()
+    printInfo(websites)
 
     cache = Cache(websites)
     contents = cache.readCache()

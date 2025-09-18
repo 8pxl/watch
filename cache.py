@@ -8,7 +8,6 @@ class Cache:
         self.websites = websites
         # self.populateUrlMap()
         for url in websites:
-            print(url)
             newHash = self.createHash(url)
             self.hashes[url] = newHash
             self.urlMap[newHash] = url
