@@ -41,15 +41,17 @@ def printInfo(websites):
     for website in websites:
         print(website)
     print("")
+
 #init
-notify("watch", "process started!")
 if __name__ == "__main__":
     notify("watch", "process started!")
-    websites = getWebsites()
-    printInfo(websites)
 
+    websites = getWebsites()
     cache = Cache(websites)
     contents = cache.readCache()
+
+    printInfo(websites)
+
 
     # web stuff
     chrome_options = Options()
@@ -57,18 +59,17 @@ if __name__ == "__main__":
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--no-sandbox")
     driver = webdriver.Chrome(options=chrome_options)
+
     #event loop
     while True:
-        debugCount +=1 
+        debugCount +=1
         for website, content in contents.items():
-            url = website
             hashedContent = cache.createHash(readWebsite(website, driver))
             if (hashedContent != content):
-                cache.updateCache(url, hashedContent)
+                cache.updateCache(website, hashedContent)
                 contents[website] = hashedContent
                 # print(hashedContent)
                 # print(f"count: {debugCount}")
                 print(f"update has occured! in {website}")
                 notify("watch", f"update has occured! in {website}")
         time.sleep(4)
-    driver.quit()

@@ -6,7 +6,6 @@ class Cache:
         self.hashes = dict()
         self.urlMap = dict()
         self.websites = websites
-        # self.populateUrlMap()
         for url in websites:
             newHash = self.createHash(url)
             self.hashes[url] = newHash
@@ -31,14 +30,10 @@ class Cache:
 
     def getUrl(self, hash):
         return self.urlMap[hash]
-    
+
     def pathFromUrl(self, url):
         return f"data/{self.getHash(url)}"
 
-    # def populateUrlMap(self):
-    #     for url in self.websites:
-    #         self.urlMap[url] = self.getHash(url)
-            
     def createCache(self):
         if not os.path.isdir("data/"):
             os.makedirs("data/")
