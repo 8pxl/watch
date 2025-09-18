@@ -6,13 +6,24 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 import os
 import requests
+import re
+
+debugCount = 0
 
 def getWebsites():
     return [line.rstrip() for line in open("sites.txt", 'r').readlines()]
 
 def readWebsite(url, driver):
+    global debugCount
+    ignoreNumbers = True
     driver.get(url)
     text = driver.find_element(By.TAG_NAME, "body").text
+    if ignoreNumbers:
+        text = re.sub(r'\d+', '', text)
+
+    # f = open(f"data/{len(url)} {debugCount}", 'x')
+    # f.write(text)
+
     # pageSource = driver.page_source
     # print(pageSource)
     # print(text)
@@ -43,12 +54,15 @@ if __name__ == "__main__":
     driver = webdriver.Chrome(options=chrome_options)
     #event loop
     while True:
+        debugCount +=1 
         for website, content in contents.items():
             url = website
             hashedContent = cache.createHash(readWebsite(website, driver))
             if (hashedContent != content):
                 cache.updateCache(url, hashedContent)
                 contents[website] = hashedContent
+                # print(hashedContent)
+                # print(f"count: {debugCount}")
                 print(f"update has occured! in {website}")
                 notify("watch", f"update has occured! in {website}")
         time.sleep(4)
