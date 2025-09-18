@@ -4,25 +4,58 @@ from hashlib import sha1
 class Cache:
     def __init__(self, websites):
         self.hashes = dict()
-        self.hashMap = dict()
+        self.urlMap = dict()
         self.websites = websites
+        # self.populateUrlMap()
+        for url in websites:
+            print(url)
+            newHash = self.createHash(url)
+            self.hashes[url] = newHash
+            self.urlMap[newHash] = url
         self.createCache()
+
+    def createHash(self, string):
+        return sha1(string.encode()).hexdigest()
+
+    def addUrl(self, url):
+        newHash = self.createHash(url)
+        self.hashes[url] = newHash
+        self.urlMap[newHash] = url
 
     def getHash(self, url):
         if url not in self.hashes.keys():
-            newHash = sha1(url.encode()).hexdigest()
+            print("invalid hash")
+            newHash = self.createHash(url)
             self.hashes[url] = newHash
-            self.hashMap[newHash] = url
+            self.urlMap[newHash] = url
         return self.hashes[url]
+
+    def getUrl(self, hash):
+        return self.urlMap[hash]
+    
+    def pathFromUrl(self, url):
+        return f"data/{self.getHash(url)}"
+
+    # def populateUrlMap(self):
+    #     for url in self.websites:
+    #         self.urlMap[url] = self.getHash(url)
+            
     def createCache(self):
         for url in self.websites:
-            path = f"data/{self.getHash(url)}"
+            path = self.pathFromUrl(url)
             if not os.path.isfile(path):
                 open(path, 'x')
+
+    def updateCache(self, url, new):
+        f = open(self.pathFromUrl(url), 'w')
+        f.write(new)
+
     def readCache(self):
-        content = []
+        content = dict()
         for url in self.websites:
-            path = f"data/{self.getHash(url)}"
+            path = self.pathFromUrl(url)
             f = open(path, 'r')
-            content.append(f.read())
+            content[url] = f.read()
+            f.close()
+        return content
 
