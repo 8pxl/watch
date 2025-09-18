@@ -41,6 +41,8 @@ class Cache:
     #         self.urlMap[url] = self.getHash(url)
             
     def createCache(self):
+        if not os.path.isdir("data/"):
+            os.makedirs("data/")
         for url in self.websites:
             path = self.pathFromUrl(url)
             if not os.path.isfile(path):
